@@ -16,10 +16,11 @@ extern "C"
 
 		log.level(Logger::TaskBegin).log("Initializing kernel.");
 
-		log.level(Logger::Info).log("Running on CPU with vendor string ");
+		log.level(Logger::Info).log("CPU vendor '");
 		char vendorstring[13];
 		cpuid::getVendorID(vendorstring);
 		term.putString(vendorstring);
+		term.putChar('\'');
 
 		log.level(Logger::TaskBegin).log("Initializing PIC...");
 		interrupts::initialize();
