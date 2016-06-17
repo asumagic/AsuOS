@@ -1,4 +1,4 @@
-# dschatzberg's code from #osdev
+# Mostly dschatzberg's code from #osdev
 # @TODO : Just recode the whole thing instead of stealing others' code and/or adapt the code to AsuOS's current style
 # @TODO : Add console feedback when required features are not detected.
 
