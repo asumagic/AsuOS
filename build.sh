@@ -4,8 +4,8 @@
 ARGSCPP="-O3 -Wall -Wextra -ffreestanding -nostdlib -lgcc -mno-red-zone -fno-exceptions -fno-rtti"
 
 echo "-- Compiling C++ code"
-objects=(kernel vga     logger     portio    cpuid)
-sources=(kernel vga/vga vga/logger io/portio cpu/cpuid)
+objects=(kernel vga     logger     portio    cpuid     interrupts)
+sources=(kernel vga/vga vga/logger io/portio cpu/cpuid cpu/interrupts)
 arraylength=${#objects[@]}
 for ((i=0; i<${arraylength}; i++));
 do
