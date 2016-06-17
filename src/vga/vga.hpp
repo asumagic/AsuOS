@@ -50,6 +50,8 @@ public:
 	void putString(const char* cstring);
 	void putChar(char character);
 
+	void scrollDown(); // Scroll down; used when reaching bottom of screen.
+
 	void setColor(uint8_t newcolor);
 	inline uint8_t getColor() const { return color; }
 

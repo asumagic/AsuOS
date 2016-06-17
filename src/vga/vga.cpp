@@ -45,7 +45,16 @@ void Terminal::putChar(char character)
 		ptr[cursor.x + (cursor.y * size.x)] = makeChar(character, color);
 		if (++cursor.x == size.x)
 			cursor = vec2u{0, cursor.y + 1};
+
+		if (cursor.y == size.y)
+			scrollDown();
 	}
+}
+
+void Terminal::scrollDown()
+{
+	// @TODO make a memcpy function and make it fast enough.
+	
 }
 
 void Terminal::setColor(uint8_t newcolor)
