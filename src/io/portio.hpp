@@ -19,7 +19,7 @@ inline void outByte(uint16_t port, uint8_t value)
 
 inline void wait()
 {
-	asm volatile("outb %0, $0x80" :: "a"(0));
+	asm volatile("outb %%al, $0x80" :: "a"(0));
 }
 
 }

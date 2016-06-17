@@ -3,6 +3,7 @@
 #include "vga/vga.hpp"
 #include "vga/logger.hpp"
 #include "cpu/cpuid.hpp"
+#include "cpu/interrupts.hpp"
 
 extern "C"
 {
@@ -18,7 +19,14 @@ extern "C"
 		log.level(Logger::Info).log("Running on CPU with vendor string ");
 		char vendorstring[13];
 		cpuid::getVendorID(vendorstring);
-		term.putString(vendorstring);	
+		term.putString(vendorstring);
+
+		log.level(Logger::TaskBegin).log("Initializing PIC...");
+		interrupts::initialize();
+
+		log.level(Logger::TaskDone).log("Falling in infinite loop.");	
+
+		for(;;);
 
 		log.level(Logger::TaskDone).log("Execution ended. Exiting.");
 	}

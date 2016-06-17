@@ -39,9 +39,43 @@ void initialize()
 #endif
 	
 	slave.sendCommand(initcmd);
-#ifndef FAST_PIC
+#ifndef FAST_PIC_INIT
 	io::wait();
 #endif
+
+	master.sendData(0x08);
+#ifndef FAST_PIC_INIT
+	io::wait();
+#endif
+
+	slave.sendData(0x70);
+#ifndef FAST_PIC_INIT
+	io::wait();
+#endif
+
+	master.sendData(4);
+#ifndef FAST_PIC_INIT
+	io::wait();
+#endif
+
+	slave.sendData(2);
+#ifndef FAST_PIC_INIT
+	io::wait();
+#endif
+
+	master.sendData(static_cast<uint8_t>(PIC::ICW4_8086));
+#ifndef FAST_PIC_INIT
+	io::wait();
+#endif
+
+	slave.sendData(static_cast<uint8_t>(PIC::ICW4_8086));
+#ifndef FAST_PIC_INIT
+	io::wait();
+#endif
+
+	master.sendData(mr1);
+	slave.sendData(mr2);	
+}
 
 PIC master = { 0x20, 0x20, 0x21 },
     slave  = { 0xA0, 0xA0, 0xA1 };

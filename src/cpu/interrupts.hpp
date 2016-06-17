@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define FAST_PIC_INIT
+#define FAST_PIC_INIT // Older hardware may need time between PIC commands.
 
 namespace interrupts
 {
@@ -15,7 +15,7 @@ namespace interrupts
 struct PIC
 {
 	uint8_t addr, cmdport, dataport;
-	enum commands
+	enum commands // @TODO rename because they aren't only commands.
 	{
 		EOI = 0x20, // End Of Interrupt
 
