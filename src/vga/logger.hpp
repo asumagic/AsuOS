@@ -30,6 +30,8 @@ private:
 	vga::Terminal& term;
 
 	Levels currentLevel;
+
+	bool skipFirst = true;
 };
 
 #endif

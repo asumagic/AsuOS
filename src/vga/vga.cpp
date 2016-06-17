@@ -3,10 +3,10 @@
 
 namespace vga {
 
-Terminal::Terminal() : color(makeColor(COLOR_WHITE, COLOR_BLACK))
+Terminal::Terminal() : color(makeColor(COLOR_LIGHT_GREY, COLOR_BLACK))
 {
 	//for (size_t i = 0; i < size.x * size.y; ++i)
-	//	ptr[i] = makeChar('*', color);
+	//	ptr[i] = makeChar(' ', color);
 }
 
 uint16_t Terminal::makeChar(char character, uint8_t color)

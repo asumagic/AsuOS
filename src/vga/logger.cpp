@@ -4,6 +4,12 @@ Logger::Logger(vga::Terminal& term) : term(term) {}
 
 Logger& Logger::level(enum Levels loglevel)
 {
+	if (term.getCursorPosition().y == 0) // @TODO : Avoid needing skipFirst?
+		skipFirst = !skipFirst;
+	
+	if (skipFirst)
+		term.putChar('\n');
+
 	currentLevel = loglevel;
 	size_t n = static_cast<size_t>(loglevel);
 	
@@ -20,15 +26,14 @@ Logger& Logger::level(enum Levels loglevel)
 void Logger::log(const char* cstring)
 {
 	term.putString(cstring);
-	term.putChar('\n');
 }
 
 const uint8_t Logger::levelcolors[] = {
-	vga::Terminal::makeColor(vga::COLOR_DARK_GREY),
+	vga::Terminal::makeColor(vga::COLOR_LIGHT_GREEN),
 	vga::Terminal::makeColor(vga::COLOR_GREEN),
 	vga::Terminal::makeColor(vga::COLOR_RED),
 	vga::Terminal::makeColor(vga::COLOR_LIGHT_BROWN),
-	vga::Terminal::makeColor(vga::COLOR_LIGHT_CYAN)};
+	vga::Terminal::makeColor(vga::COLOR_DARK_GREY)};
 
 const char* const Logger::levelstrings[] = {
 	"[ ** ]",
