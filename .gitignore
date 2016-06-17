@@ -1,4 +1,10 @@
-*.o
-*.iso
-*.bin
+# Temporary vim file
+*.swp
+
+# Build folder & object/binaries
 build/
+*.bin
+*.o
+
+# Final ISO, to enable later?
+*.iso
