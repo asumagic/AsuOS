@@ -39,20 +39,30 @@ struct PIC
 	uint8_t readData(); // Read data from the PIC
 };
 
+// IDT pointer used by lidt
 struct IDTPointer
 {
 	uint16_t limit; // IDT size in bytes -1
-	uint64_t address;
-};
+	uint64_t address; // Address to the IDT
+} __attribute__((packed));
 
+// The offset is split in two accross the IDT in compatibility/long mode.
+// It consists of a 64-bit address, its segment selector and the type & attributes.
+// Type & Attribute byte :
+// - 4 bit gate type
+// - Storage segment bit
+// - 2 bit descriptor priviledge level (specifies which rings can call the gate).
+// - Present bit (0 if unused)
 struct IDTEntry
 {
-	uint16_t offsethigh;
+	uint16_t offsetlow; // Low part of the offset
 	uint16_t segmentselector;
 	uint8_t  unused;
 	uint8_t  typeattrib;
-	uint16_t offsetlow;
-};
+	uint16_t offsetmiddle; // Low and high part of the pointer pointing to the interruption handler
+	uint32_t offsethigh;
+	uint32_t unusedbis;
+} __attribute__((packed));
 
 extern PIC master, slave;
 
