@@ -39,6 +39,21 @@ struct PIC
 	uint8_t readData(); // Read data from the PIC
 };
 
+struct IDTPointer
+{
+	uint16_t limit; // IDT size in bytes -1
+	uint64_t address;
+};
+
+struct IDTEntry
+{
+	uint16_t offsethigh;
+	uint16_t segmentselector;
+	uint8_t  unused;
+	uint8_t  typeattrib;
+	uint16_t offsetlow;
+};
+
 extern PIC master, slave;
 
 void eoi(uint8_t irq); // End Of Interrupt, determines which PIC the EOI should be sent to
