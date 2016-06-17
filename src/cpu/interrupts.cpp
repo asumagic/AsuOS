@@ -30,49 +30,20 @@ void eoi(uint8_t irq)
 // Remap to avoid IRQs conflicting with CPU exceptions
 void initialize()
 {
+	master.sendCommand(PIC::INIT);
+	slave.sendCommand(PIC::INIT);
+
 	uint8_t mr1 = master.readData(), mr2 = slave.readData();
 
 	PIC::commands initcmd = (PIC::commands)((uint8_t)PIC::ICW1_INIT + (uint8_t)PIC::ICW1_ICW4);
 	master.sendCommand(initcmd);
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-	
 	slave.sendCommand(initcmd);
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	master.sendData(0x08);
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	slave.sendData(0x70);
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	master.sendData(4);
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	slave.sendData(2);
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	master.sendData(static_cast<uint8_t>(PIC::ICW4_8086));
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	slave.sendData(static_cast<uint8_t>(PIC::ICW4_8086));
-#ifndef FAST_PIC_INIT
-	io::wait();
-#endif
-
 	master.sendData(mr1);
 	slave.sendData(mr2);	
 }

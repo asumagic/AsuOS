@@ -3,8 +3,6 @@
 
 #include <stdint.h>
 
-#define FAST_PIC_INIT // Older hardware may need time between PIC commands.
-
 namespace interrupts
 {
 
@@ -17,7 +15,9 @@ struct PIC
 	uint8_t addr, cmdport, dataport;
 	enum commands // @TODO rename because they aren't only commands.
 	{
-		EOI = 0x20, // End Of Interrupt
+		EOI = 0x20, // End Of Interrupt,
+
+		INIT = 0x11, // init the PIC
 
 		// Initialization command words
 		ICW1_ICW4 = 0x01,       // ICW4 needed?
@@ -44,6 +44,10 @@ extern PIC master, slave;
 void eoi(uint8_t irq); // End Of Interrupt, determines which PIC the EOI should be sent to
 
 void initialize(); // Initialize PICs
+
+extern "C" {
+	// Exception handlers
+}
 
 }
 
