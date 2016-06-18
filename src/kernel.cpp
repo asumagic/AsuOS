@@ -22,7 +22,7 @@ extern "C"
 		term.putString(vendorstring);
 		term.putChar('\'');
 
-		log.level(Logger::TaskBegin).log("Initializing PIC...");
+		log.level(Logger::TaskBegin).log("Preparing interruptions...");
 		interrupts::initialize();
 
 		log.level(Logger::TaskDone).log("Falling in infinite loop.");	

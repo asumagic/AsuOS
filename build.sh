@@ -15,8 +15,8 @@ done
 
 # Full assembly code
 echo "-- Compiling x86 assembly code"
-objectsasm=(boot)
-sourcesasm=(boot)
+objectsasm=(boot interruptsasm)
+sourcesasm=(boot cpu/interrupts)
 arraylength=${#objectsasm[@]}
 for ((i=0; i<${arraylength}; i++));
 do

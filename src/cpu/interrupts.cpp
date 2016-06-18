@@ -28,10 +28,11 @@ void eoi(uint8_t irq)
 }
 
 // Remap to avoid IRQs conflicting with CPU exceptions
+// Do IDT initializations
 void initialize()
 {
-	master.sendCommand(PIC::INIT);
-	slave.sendCommand(PIC::INIT);
+	//master.sendCommand(PIC::INIT); // Is this even the correct way?
+	//slave.sendCommand(PIC::INIT);
 
 	uint8_t mr1 = master.readData(), mr2 = slave.readData();
 
@@ -45,10 +46,30 @@ void initialize()
 	master.sendData(static_cast<uint8_t>(PIC::ICW4_8086));
 	slave.sendData(static_cast<uint8_t>(PIC::ICW4_8086));
 	master.sendData(mr1);
-	slave.sendData(mr2);	
+	slave.sendData(mr2);
+
+	for (uint16_t i = 0; i < 256; ++i)
+	{
+		
+	}	
+
+	loadidt();
+
+	// Once we're done with initializing the IDT & co
+	asm volatile("sti");
+
+	while(true);
+}
+
+void loadidt()
+{
+	asm volatile("lidt %0" :: "m"(idtptr));
 }
 
 PIC master = { 0x20, 0x20, 0x21 },
     slave  = { 0xA0, 0xA0, 0xA1 };
+
+IDTPointer idtptr = { (sizeof(IDTEntry) * 8 * 256 - 1), idtentries }; // Bytes * bits * entries - 1
+IDTEntry idtentries[256];
 
 }

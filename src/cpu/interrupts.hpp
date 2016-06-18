@@ -39,11 +39,13 @@ struct PIC
 	uint8_t readData(); // Read data from the PIC
 };
 
+struct IDTEntry;
+
 // IDT pointer used by lidt
 struct IDTPointer
 {
-	uint16_t limit; // IDT size in bytes -1
-	uint64_t address; // Address to the IDT
+	uint16_t size; // IDT size in bytes -1
+	IDTEntry* address; // Address to the IDT
 } __attribute__((packed));
 
 // The offset is split in two accross the IDT in compatibility/long mode.
@@ -70,8 +72,11 @@ void eoi(uint8_t irq); // End Of Interrupt, determines which PIC the EOI should 
 
 void initialize(); // Initialize PICs
 
+void loadidt();
+
 extern "C" {
-	// Exception handlers
+	extern IDTPointer idtptr;
+	extern IDTEntry idtentries[256];
 }
 
 }
