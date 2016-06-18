@@ -74,6 +74,8 @@ void initialize(); // Initialize PICs
 
 void loadidt();
 
+void hang();
+
 extern "C" {
 	extern IDTPointer idtptr;
 	extern IDTEntry idtentries[256];

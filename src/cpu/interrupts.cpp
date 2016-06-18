@@ -48,9 +48,16 @@ void initialize()
 	master.sendData(mr1);
 	slave.sendData(mr2);
 
+	void (*hangf)(void) = &hang;
+	uint64_t hangfaddr = reinterpret_cast<uint64_t>(hangf);
+
 	for (uint16_t i = 0; i < 256; ++i)
 	{
-		
+		idtentries[i].segmentselector = 0; // used in x86-64? check
+		idtentries[i].typeattrib = 0b10001110; // 1 00 1 1110
+		idtentries[i].offsetlow =    (hangfaddr & 0x00FF);
+		idtentries[i].offsetmiddle = (hangfaddr & 0xFFFF00) >> 16;
+		idtentries[i].offsethigh =   (hangfaddr & 0xFFFF000000) >> 48;
 	}	
 
 	loadidt();
@@ -64,6 +71,11 @@ void initialize()
 void loadidt()
 {
 	asm volatile("lidt %0" :: "m"(idtptr));
+}
+
+void hang()
+{
+	for(;;);
 }
 
 PIC master = { 0x20, 0x20, 0x21 },
