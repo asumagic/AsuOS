@@ -53,17 +53,17 @@ void initialize()
 
 	for (uint16_t i = 0; i < 256; ++i)
 	{
-		idtentries[i].segmentselector = 0; // used in x86-64? check
-		idtentries[i].typeattrib = 0b10001110; // 1 00 1 1110
-		idtentries[i].offsetlow =    (hangfaddr & 0x00FF);
-		idtentries[i].offsetmiddle = (hangfaddr & 0xFFFF00) >> 16;
+		idtentries[i].segmentselector = 0x08;
+		idtentries[i].typeattrib = 0b10001110; // 1 00 01110 - present, ring, 01110
+		idtentries[i].offsetlow =    (hangfaddr & 0x00000000FF);
+		idtentries[i].offsetmiddle = (hangfaddr & 0x0000FFFF00) >> 16;
 		idtentries[i].offsethigh =   (hangfaddr & 0xFFFF000000) >> 48;
 	}	
 
 	loadidt();
 
 	// Once we're done with initializing the IDT & co
-	asm volatile("sti");
+	//asm volatile("sti");
 
 	while(true);
 }
