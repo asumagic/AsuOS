@@ -3,25 +3,29 @@
 # Kernel code
 ARGSCPP="-O3 -Wall -Wextra -ffreestanding -nostdlib -lgcc -mno-red-zone -fno-exceptions -fno-rtti"
 
-echo "-- Compiling C++ code"
+echo "-- Starting C++ compilation"
 objects=(kernel vga     logger     portio    cpuid     interrupts)
 sources=(kernel vga/vga vga/logger io/portio cpu/cpuid cpu/interrupts)
 arraylength=${#objects[@]}
 for ((i=0; i<${arraylength}; i++));
 do
-	echo "- Building ${sources[$i]}..."
-	bash -c "x86_64-elf-g++ -o ${objects[$i]}.o $ARGSCPP -c ../src/${sources[$i]}.cpp"
+	bash -c "x86_64-elf-g++ -o ${objects[$i]}.o $ARGSCPP -c ../src/${sources[$i]}.cpp"&
 done
 
 # Full assembly code
-echo "-- Compiling x86 assembly code"
+echo "-- Starting x86 assembly code compilation"
 objectsasm=(boot interruptsasm)
 sourcesasm=(boot cpu/interrupts)
 arraylength=${#objectsasm[@]}
 for ((i=0; i<${arraylength}; i++));
 do
-	echo "- Building ${sourcesasm[$i]}..."
-	x86_64-elf-as -o ${objectsasm[$i]}.o ../src/${sourcesasm[$i]}.s
+	x86_64-elf-as -o ${objectsasm[$i]}.o ../src/${sourcesasm[$i]}.s&
+done
+
+# Wait for compiling jobs to end before compiling the kernel
+for job in `jobs -p`
+do
+	wait $job
 done
 
 # Build the kernel image
