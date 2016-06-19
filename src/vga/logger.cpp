@@ -2,7 +2,7 @@
 
 Logger::Logger(vga::Terminal& term) : term(term) {}
 
-Logger& Logger::level(enum Levels loglevel)
+Logger& Logger::operator()(enum Levels loglevel)
 {
 	if (term.getCursorPosition().y == 0) // @TODO : Avoid needing skipFirst?
 		skipFirst = !skipFirst;
@@ -23,9 +23,10 @@ Logger& Logger::level(enum Levels loglevel)
 	return *this;
 }
 
-void Logger::log(const char* cstring)
+Logger& Logger::operator<<(const char* cstring)
 {
 	term.putString(cstring);
+	return *this;
 }
 
 const uint8_t Logger::levelcolors[] = {

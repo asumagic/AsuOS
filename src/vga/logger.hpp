@@ -23,8 +23,8 @@ public:
 
 	Logger(vga::Terminal& term);
 
-	Logger& level(enum Levels loglevel);
-	void log(const char* cstring);
+	Logger& operator()(enum Levels loglevel);
+	Logger& operator<<(const char* cstring);
 
 private:
 	vga::Terminal& term;

@@ -11,24 +11,18 @@ extern "C"
 	{
 		vga::Terminal term;
 		Logger log(term);
-		log.level(Logger::Info).log("AsuOS x86-64 kernel");
-		log.level(Logger::Info).log("Running development build #1");
+		log(Logger::Info) << "AsuOS x86-64 kernel";
+		log(Logger::Info) << "Running development build #1";
 
-		log.level(Logger::TaskBegin).log("Initializing kernel.");
+		log(Logger::TaskBegin) << "Initializing kernel.";
 
-		log.level(Logger::Info).log("CPU vendor '");
 		char vendorstring[13];
-		cpuid::getVendorID(vendorstring);
-		term.putString(vendorstring);
-		term.putChar('\'');
+		cpuid::getVendorString(vendorstring);
+		log(Logger::Info) << "CPU vendor '" << vendorstring << "'";
 
-		log.level(Logger::TaskBegin).log("Preparing interruptions...");
+		log(Logger::TaskBegin) << "Preparing interruptions...";
 		interrupts::initialize();
 
-		log.level(Logger::TaskDone).log("Falling in infinite loop.");	
-
-		for(;;);
-
-		log.level(Logger::TaskDone).log("Execution ended. Exiting.");
+		log(Logger::TaskDone) << "Execution ended. Exiting.";
 	}
 }

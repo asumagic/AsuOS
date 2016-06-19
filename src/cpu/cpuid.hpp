@@ -10,7 +10,7 @@ namespace cpuid
 {
 
 // Return the CPU vendor ID (e.g. "AuthenticAMD" or "GenuineIntel")
-void getVendorID(char (&cpuid)[13]);
+void getVendorString(char (&cpuid)[13]);
 
 }
 

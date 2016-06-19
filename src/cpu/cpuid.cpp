@@ -3,7 +3,7 @@
 namespace cpuid
 {
 
-void getVendorID(char (&cpuid)[13])
+void getVendorString(char (&cpuid)[13])
 {
 	asm("mov $0, %eax\t\n"
 		"cpuid");
