@@ -55,15 +55,15 @@ void initialize()
 	{
 		idtentries[i].segmentselector = 0x08;
 		idtentries[i].typeattrib = 0b10001110; // 1 00 01110 - present, ring, 01110
-		idtentries[i].offsetlow =    (hangfaddr & 0x00000000FF);
-		idtentries[i].offsetmiddle = (hangfaddr & 0x0000FFFF00) >> 16;
-		idtentries[i].offsethigh =   (hangfaddr & 0xFFFF000000) >> 48;
+		idtentries[i].offsetlow =    (hangfaddr &        0xFFFF);
+		idtentries[i].offsetmiddle = (hangfaddr >> 16) & 0xFFFFFFFF;
+		idtentries[i].offsethigh =   (hangfaddr >> 24) & 0xFFFFFFFF;
 	}	
 
 	loadidt();
 
 	// Once we're done with initializing the IDT & co
-	//asm volatile("sti");
+	asm volatile("sti");
 
 	while(true);
 }
