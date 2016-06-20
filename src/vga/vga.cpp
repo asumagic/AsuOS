@@ -3,34 +3,27 @@
 
 namespace vga {
 
-Terminal::Terminal() : color(makeColor(COLOR_LIGHT_GREY, COLOR_BLACK))
+VGATerminal::VGATerminal() : color(makeColor(COLOR_LIGHT_GREY, COLOR_BLACK)) {}
+
+Module::loadResult VGATerminal::moduleLoad()
 {
-	//for (size_t i = 0; i < size.x * size.y; ++i)
-	//	ptr[i] = makeChar(' ', color);
+	// @TODO check if another driver uses the terminal
+	return LDSUCCESS;
 }
 
-uint16_t Terminal::makeChar(char character, uint8_t color)
+uint16_t VGATerminal::makeChar(char character, uint8_t color)
 {
 	uint16_t char16b = character;
 	uint16_t color16b = color;
 	return char16b | (color16b << 8);
 }
 
-uint16_t& Terminal::operator()(vec2u position)
+uint16_t& VGATerminal::operator()(vec2u position)
 {
 	return ptr[position.x + (position.y * size.x)];
 }
 
-void Terminal::putString(const char* cstring)
-{
-	int i = -1; // @TODO : avoid doing this, use size_t too
-	while (cstring[++i] != 0) // != end of string character.
-		putChar(cstring[i]);
-
-	updateCursor();
-}
-
-void Terminal::putChar(char character)
+void VGATerminal::putChar(char character)
 {
 	switch (character)
 	{
@@ -51,23 +44,23 @@ void Terminal::putChar(char character)
 	}
 }
 
-void Terminal::scrollDown()
+void VGATerminal::scrollDown()
 {
 	// @TODO make a memcpy function and make it fast enough.
 	
 }
 
-void Terminal::setColor(uint8_t newcolor)
+void VGATerminal::setColor(uint8_t newcolor)
 {
 	color = newcolor;
 }
 
-void Terminal::setCursorPosition(vec2u newposition)
+void VGATerminal::setCursorPosition(vec2u newposition)
 {
 	cursor = newposition;
 }
 
-void Terminal::updateCursor()
+void VGATerminal::updateCursor()
 {
 	unsigned int index = (cursor.x + (cursor.y * size.x));
 

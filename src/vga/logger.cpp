@@ -1,6 +1,6 @@
 #include "logger.hpp"
 
-Logger::Logger(vga::Terminal& term) : term(term) {}
+Logger::Logger(vga::VGATerminal& term) : term(term) {}
 
 Logger& Logger::operator()(enum Levels loglevel)
 {
@@ -30,11 +30,11 @@ Logger& Logger::operator<<(const char* cstring)
 }
 
 const uint8_t Logger::levelcolors[] = {
-	vga::Terminal::makeColor(vga::COLOR_LIGHT_GREEN),
-	vga::Terminal::makeColor(vga::COLOR_GREEN),
-	vga::Terminal::makeColor(vga::COLOR_RED),
-	vga::Terminal::makeColor(vga::COLOR_LIGHT_BROWN),
-	vga::Terminal::makeColor(vga::COLOR_DARK_GREY)};
+	vga::VGATerminal::makeColor(vga::COLOR_LIGHT_GREEN),
+	vga::VGATerminal::makeColor(vga::COLOR_GREEN),
+	vga::VGATerminal::makeColor(vga::COLOR_RED),
+	vga::VGATerminal::makeColor(vga::COLOR_LIGHT_BROWN),
+	vga::VGATerminal::makeColor(vga::COLOR_DARK_GREY)};
 
 const char* const Logger::levelstrings[] = {
 	"[ ** ]",

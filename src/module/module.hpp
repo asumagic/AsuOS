@@ -13,15 +13,9 @@ public:
 	};
 
 	// Load a kernel module / driver.
-	loadResult moduleLoad();
+	virtual loadResult moduleLoad() = 0;
 
 	// Close a module
-	void moduleExit();
-};
-
-class ModuleExample : public Module
-{
-	loadResult moduleLoad();
 	void moduleExit();
 };
 

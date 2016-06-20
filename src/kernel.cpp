@@ -14,14 +14,13 @@ extern "C"
 
 		//// TEMPORARY HACK @TODO dynamic allocation ////
 
-		ModuleExample __mod1;
-		kinst.modules[0] = &__mod1;
+		vga::VGATerminal term;
+		kinst.modules[0] = &term;
 
 		//// END OF TEMPORARY HACK ////
 
 		kinst.initializeModules();
 
-		vga::Terminal term;
 		Logger log(term);
 		log(Logger::Info) << "AsuOS x86-64 kernel";
 		log(Logger::Info) << "Running development build #1";

@@ -5,6 +5,30 @@
 #include <stdint.h>
 
 #include "../common/vec.hpp"
+#include "../module/module.hpp"
+
+// Generic terminal driver class
+template<typename pixT>
+class TerminalDriver : public Module
+{
+public:
+	void putString(const char* cstring)
+	{
+		int i = -1; // @TODO : avoid doing this, use size_t too
+		while (cstring[++i] != 0) // != end of string character.
+			putChar(cstring[i]);
+
+		updateCursor();
+	}
+
+	virtual void putChar(char character) = 0;
+
+	virtual void setCursorPosition(vec2u newposition) = 0;
+	virtual void updateCursor() = 0; // Not done by setCursorPosition.
+	virtual vec2u getCursorPosition() const = 0;
+
+	virtual pixT* getFramebuffer() const = 0;
+};
 
 namespace vga {
 
@@ -29,10 +53,13 @@ enum VGAColors
 	COLOR_WHITE
 };
 
-class Terminal
+// Generic text-mode VGA terminal
+class VGATerminal : public TerminalDriver<uint16_t>
 {
 public:
-	Terminal();
+	VGATerminal();
+	
+	Module::loadResult moduleLoad() override;
 
 	// Returns the VGA color with frontground and background values given
 	// bg = 4 most significant bytes
@@ -47,17 +74,18 @@ public:
 
 	uint16_t& operator()(vec2u position);
 
-	void putString(const char* cstring);
-	void putChar(char character);
+	void putChar(char character) override;
 
 	void scrollDown(); // Scroll down; used when reaching bottom of screen.
 
 	void setColor(uint8_t newcolor);
 	inline uint8_t getColor() const { return color; }
 
-	void setCursorPosition(vec2u newposition);
-	void updateCursor();
-	inline vec2u getCursorPosition() const { return cursor; }
+	void setCursorPosition(vec2u newposition) override;
+	void updateCursor() override;
+	inline vec2u getCursorPosition() const override { return cursor; }
+
+	inline uint16_t* getFramebuffer() const override { return ptr; }
 
 private:
 	uint8_t color;
