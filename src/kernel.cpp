@@ -4,11 +4,23 @@
 #include "vga/logger.hpp"
 #include "cpu/cpuid.hpp"
 #include "cpu/interrupts.hpp"
+#include "common/kernel.hpp"
 
 extern "C"
 {
 	void kmain()
 	{
+		Kernel kinst;
+
+		//// TEMPORARY HACK @TODO dynamic allocation ////
+
+		ModuleExample __mod1;
+		kinst.modules[0] = &__mod1;
+
+		//// END OF TEMPORARY HACK ////
+
+		kinst.initializeModules();
+
 		vga::Terminal term;
 		Logger log(term);
 		log(Logger::Info) << "AsuOS x86-64 kernel";

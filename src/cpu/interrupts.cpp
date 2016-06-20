@@ -1,5 +1,6 @@
 #include "interrupts.hpp"
 #include "../io/portio.hpp"
+#include "../common/kernel.hpp"
 
 namespace interrupts
 {
@@ -48,24 +49,35 @@ void initialize()
 	master.sendData(mr1);
 	slave.sendData(mr2);
 
-	// @TODO query modules to register ISR handlers
-
-	void (*hangf)(void) = &isrcommonhandler ;
-	uint64_t hangfaddr = reinterpret_cast<uint64_t>(hangf);
-
 	for (uint16_t i = 0; i < 256; ++i)
 	{
+		uint64_t addr = Kernel::getObject()->queryISRHandler(i);
+
 		idtentries[i].segmentselector = 0x08;
-		idtentries[i].typeattrib = { true, 0, 0, 0b1110 };
-		idtentries[i].offsetlow =    (hangfaddr &        0xFFFF);
-		idtentries[i].offsetmiddle = (hangfaddr >> 16) & 0xFFFFFFFF;
-		idtentries[i].offsethigh =   (hangfaddr >> 24) & 0xFFFFFFFF;
+		if (addr)
+		{
+			idtentries[i].typeattrib.present = true;
+			idtentries[i].offsetlow =    addr &         0xFFFF;
+			idtentries[i].offsetmiddle = (addr >> 16) & 0xFFFFFFFF;
+			idtentries[i].offsethigh =   (addr >> 24) & 0xFFFFFFFF;
+		}
+		else
+		{
+			idtentries[i].typeattrib.present = false;
+		}
+
+		idtentries[i].typeattrib.zero = 0;
+		idtentries[i].typeattrib.attribute = 0b1110;
+		idtentries[i].typeattrib.ring = 0;
+		
 	}	
 
 	loadidt();
 
 	// Once we're done with initializing the IDT & co
 	asm volatile("sti");
+
+	while(true);
 }
 
 void loadidt()

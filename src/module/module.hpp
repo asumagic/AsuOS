@@ -19,4 +19,10 @@ public:
 	void moduleExit();
 };
 
+class ModuleExample : public Module
+{
+	loadResult moduleLoad();
+	void moduleExit();
+};
+
 #endif
