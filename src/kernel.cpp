@@ -22,6 +22,7 @@ extern "C"
 
 		log(Logger::TaskBegin) << "Preparing interruptions...";
 		interrupts::initialize();
+		//log.updateStatus(Logger::TaskDone);
 
 		log(Logger::TaskDone) << "Execution ended. Exiting.";
 	}

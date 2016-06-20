@@ -1,5 +1,5 @@
 # Mostly dschatzberg's code from #osdev
-# @TODO : Just recode the whole thing instead of stealing others' code and/or adapt the code to AsuOS's current style
+# @TODO : Recode parts and move up as much as possible to C++ code? e.g. SSE and FPU initialization
 # @TODO : Add console feedback when required features are not detected.
 
 .text
@@ -43,28 +43,28 @@ GDTPointer:
 	.long GDT
 
 .align 8
-GDT: # Base values are ignored in x86_64
+GDT:
 # NULL descriptor
-.word 0 // Limit (low)
-.word 0 // Base (low)
-.byte 0 // Base (middle)
-.byte 0 // Access
-.byte 0 // Granularity
-.byte 0 // Base (high)
+.word 0 # Limit (low) - unused on x86-64
+.word 0 # Base (low) - unused on x86-64
+.byte 0 # Base (middle) - unused on x86-64
+.byte 0 # Access
+.byte 0 # Granularity
+.byte 0 # Base (high)
 
 # Code segment descriptor
 .word 0
 .word 0
 .byte 0
-.byte 0x98 // Access : Present, Not system, Execute only
-.byte 0x20 // Granularity, long mode
+.byte 0x98 # Present, Not system, Execute only
+.byte 0x20 # 64-bit descriptor
 .byte 0
 
 # Data segment descriptor
 .word 0
 .word 0
 .byte 0
-.byte 0x90 // Access : Present, Not system
+.byte 0x90 # Present, Not system
 .byte 0
 .byte 0
 GDTEnd = .

@@ -48,13 +48,15 @@ void initialize()
 	master.sendData(mr1);
 	slave.sendData(mr2);
 
-	void (*hangf)(void) = &hang;
+	// @TODO query modules to register ISR handlers
+
+	void (*hangf)(void) = &isrcommonhandler ;
 	uint64_t hangfaddr = reinterpret_cast<uint64_t>(hangf);
 
 	for (uint16_t i = 0; i < 256; ++i)
 	{
 		idtentries[i].segmentselector = 0x08;
-		idtentries[i].typeattrib = 0b10001110; // 1 00 01110 - present, ring, always 01110
+		idtentries[i].typeattrib = { true, 0, 0, 0b1110 };
 		idtentries[i].offsetlow =    (hangfaddr &        0xFFFF);
 		idtentries[i].offsetmiddle = (hangfaddr >> 16) & 0xFFFFFFFF;
 		idtentries[i].offsethigh =   (hangfaddr >> 24) & 0xFFFFFFFF;
@@ -64,18 +66,11 @@ void initialize()
 
 	// Once we're done with initializing the IDT & co
 	asm volatile("sti");
-
-	while(true);
 }
 
 void loadidt()
 {
 	asm volatile("lidt %0" :: "m"(idtptr));
-}
-
-void hang()
-{
-	while(true);
 }
 
 PIC master = { 0x20, 0x20, 0x21 },
