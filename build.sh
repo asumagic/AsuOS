@@ -3,7 +3,7 @@
 # Kernel code
 ARGSCPP="-O3 -Wall -Wextra -ffreestanding -nostdlib -lgcc -mno-red-zone -fno-exceptions -fno-rtti"
 
-echo "-- Starting C++ compilation"
+echo "-- Compiling C++ code"
 objects=(kernel module        vga     logger     portio    cpuid     interrupts)
 sources=(kernel module/module vga/vga vga/logger io/portio cpu/cpuid cpu/interrupts)
 arraylength=${#objects[@]}
@@ -13,7 +13,7 @@ do
 done
 
 # Full assembly code
-echo "-- Starting x86 assembly code compilation"
+echo "-- Compiling plain assembly"
 objectsasm=(boot interruptsasm)
 sourcesasm=(boot cpu/interrupts)
 arraylength=${#objectsasm[@]}

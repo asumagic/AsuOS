@@ -60,7 +60,10 @@ struct IDTEntry
 	uint16_t offsetlow; // Low part of the offset
 	uint16_t segmentselector;
 	uint8_t  unused;
-	uint8_t  typeattrib;
+	struct typeattrib_t
+	{
+		uint8_t present:1, ring:2, zero:1, attribute:4; 
+	} typeattrib;
 	uint16_t offsetmiddle; // Low and high part of the pointer pointing to the interruption handler
 	uint32_t offsethigh;
 	uint32_t unusedbis;
@@ -74,9 +77,9 @@ void initialize(); // Initialize PICs
 
 void loadidt();
 
-void hang();
-
 extern "C" {
+	extern void isrcommonhandler();
+
 	extern IDTPointer idtptr;
 	extern IDTEntry idtentries[256];
 }
