@@ -1,3 +1,1 @@
-cd ../
 bochs
-cd build
