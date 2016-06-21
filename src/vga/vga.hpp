@@ -42,7 +42,7 @@ public:
 	// Returns the VGA color with frontground and background values given
 	// bg = 4 most significant bytes
 	// fg = 4 least significant bytes
-	constexpr static uint8_t makeColor(enum VGAColors frontground, enum VGAColors background = COLOR_BLACK)
+	constexpr uint8_t makeColor(enum VGAColors frontground, enum VGAColors background = COLOR_BLACK) override
 	{
 		return frontground | (background << 4);
 	}

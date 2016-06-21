@@ -33,6 +33,8 @@ template<typename pixT, typename charT, typename colorT>
 class TerminalColorDriver : public TerminalDriver<pixT>
 {
 public:
+	constexpr uint8_t makeColor(enum VGAColors frontground, enum VGAColors background = COLOR_BLACK) override
+	
 	virtual void setColor(colorT newcolor) = 0;
 	virtual colorT getColor() const = 0;
 };

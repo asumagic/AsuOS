@@ -4,8 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "vga.hpp"
-
 template<typename T>
 class Logger
 {
