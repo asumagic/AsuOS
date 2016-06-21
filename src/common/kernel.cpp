@@ -20,9 +20,20 @@ void Kernel::initializeModules()
 	}
 }
 
-void Kernel::defineISRHandler(uint8_t id, uint64_t addr)
+Module& Kernel::getModule(int i)
 {
-	ISRAddressTable[id] = addr;
+	return *modules[i];
+}
+
+bool Kernel::defineISRHandler(uint8_t id, uint64_t addr)
+{
+	if (!ISRAddressTable[id])
+	{
+		ISRAddressTable[id] = addr;
+		return true;
+	}
+
+	return false;
 }
 
 uint64_t Kernel::queryISRHandler(uint8_t id)

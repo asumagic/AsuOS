@@ -22,6 +22,7 @@ build: $(OBJECTSCPP) $(OBJECTSASM)
 all:
 	build
 	run
+	clean
 
 $(OBJDIR)/%.o:%.s
 	@$(AS) -o $@ -c $<

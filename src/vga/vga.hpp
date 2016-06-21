@@ -32,7 +32,7 @@ enum VGAColors
 };
 
 // Generic text-mode VGA terminal
-class VGATerminal : public TerminalDriver<uint16_t>
+class VGATerminal : public TerminalColorDriver<uint16_t, uint8_t, uint8_t>
 {
 public:
 	VGATerminal();
@@ -56,8 +56,8 @@ public:
 
 	void scrollDown(); // Scroll down; used when reaching bottom of screen.
 
-	void setColor(uint8_t newcolor);
-	inline uint8_t getColor() const { return color; }
+	void setColor(uint8_t newcolor) override;
+	inline uint8_t getColor() const override { return color; }
 
 	void setCursorPosition(vec2u newposition) override;
 	void updateCursor() override;

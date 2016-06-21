@@ -17,6 +17,12 @@ public:
 
 	// Close a module
 	void moduleExit();
+
+	// Return the module name
+	const char* getModuleName() const { return name; }
+
+private:
+	const char* name = "Unknown module";
 };
 
 #endif

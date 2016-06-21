@@ -28,4 +28,13 @@ public:
 	virtual pixT* getFramebuffer() const = 0;
 };
 
+// Generic colored terminal driver class
+template<typename pixT, typename charT, typename colorT>
+class TerminalColorDriver : public TerminalDriver<pixT>
+{
+public:
+	virtual void setColor(colorT newcolor) = 0;
+	virtual colorT getColor() const = 0;
+};
+
 #endif
