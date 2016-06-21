@@ -10,11 +10,18 @@ SOURCESASM = $(shell find ./src -name *.s)
 OBJECTSCPP = $(SOURCESCPP:.cpp=.o)
 OBJECTSASM = $(SOURCESASM:.s=.o)
 
-all: $(OBJECTSCPP) $(OBJECTSASM)
+run:
+	bochs
+
+build: $(OBJECTSCPP) $(OBJECTSASM)
 	@$(CPP) -T ./src/linker.ld -o ./iso/boot/kernel.bin $^ $(CPPFLAGS) $(LDFLAGS)
 	@strip ./iso/boot/kernel.bin
 	@objcopy -O elf32-i386 ./iso/boot/kernel.bin
 	@bash -c "grub-mkrescue /usr/lib/grub/i386-pc -o ./build/asuos.iso ./iso &> /dev/null"
+
+all:
+	build
+	run
 
 $(OBJDIR)/%.o:%.s
 	@$(AS) -o $@ -c $<
