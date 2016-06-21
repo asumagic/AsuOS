@@ -1,3 +1,6 @@
+#ifndef HVEC
+#define HVEC
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -20,3 +23,5 @@ typedef vec2<unsigned short> vec2us;
 // char
 typedef vec2<char> vec2c;
 typedef vec2<char> vec2uc;
+
+#endif
