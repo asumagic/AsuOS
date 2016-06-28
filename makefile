@@ -5,8 +5,8 @@ CPPFLAGS = -O3 -Wall -Wextra -ffreestanding -nostdlib -lgcc -mno-red-zone -fno-e
 
 OBJDIR = build
 
-SOURCESCPP = $(shell find ./src -name *.cpp)
-SOURCESASM = $(shell find ./src -name *.s) 
+SOURCESCPP = $(shell find ./srcremake -name *.cpp)
+SOURCESASM = $(shell find ./srcremake -name *.s) 
 OBJECTSCPP = $(SOURCESCPP:.cpp=.o)
 OBJECTSASM = $(SOURCESASM:.s=.o)
 
@@ -22,7 +22,6 @@ build: $(OBJECTSCPP) $(OBJECTSASM)
 all:
 	build
 	run
-	clean
 
 $(OBJDIR)/%.o:%.s
 	@$(AS) -o $@ -c $<
